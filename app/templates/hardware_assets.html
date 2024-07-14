@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Hardware Assets{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">Hardware Assets</h2>
+    <p class="lead">Manage your hardware assets</p>
+</div>
+
+<div class="card bg-dark mb-3">
+    <div class="card-header">AI Chatbot</div>
+    <div class="card-body">
+        <h5 class="card-title">Need help? Ask our AI chatbot</h5>
+        <p class="card-text">Our AI chatbot can assist you with managing your hardware assets. Ask it anything!</p>
+        <div class="chatbot">
+            <div id="chatbox" class="chatbox">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="input-group mt-3">
+                <input id="userInput" type="text" class="form-control" placeholder="Type a message..." aria-label="Type a message">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .chatbox {
+        height: 400px;
+        overflow-y: scroll;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .message {
+        display: flex;
+        margin-bottom: 15px;
+        align-items: center;
+    }
+    .user-message {
+        justify-content: flex-end;
+    }
+    .bot-message {
+        justify-content: flex-start;
+    }
+    .message-content {
+        max-width: 60%;
+        padding: 10px 15px;
+        border-radius: 20px;
+        word-wrap: break-word;
+    }
+    .user-message .message-content {
+        background-color: #E5383B;
+        color: white;
+        border-top-right-radius: 0;
+    }
+    .bot-message .message-content {
+        background-color: #6c757d;
+        color: white;
+        border-top-left-radius: 0;
+    }
+    .input-group {
+        display: flex;
+        align-items: center;
+    }
+    .input-group input {
+        flex: 1;
+    }
+    .input-group button {
+        margin-left: 10px;
+    }
+</style>
+
+<script>
+function sendMessage() {
+    var userInput = document.getElementById('userInput').value;
+    if (userInput.trim() === '') {
+        return;
+    }
+
+    var chatbox = document.getElementById('chatbox');
+    chatbox.innerHTML += '<div class="message user-message"><div class="message-content">' + userInput + '</div></div>';
+    chatbox.scrollTop = chatbox.scrollHeight;
+
+    fetch('/chatbot/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: userInput })
+    })
+    .then(response => response.json())
+    .then(data => {
+        var botResponse = data.response || "Sorry, I didn't understand that. Please try again.";
+        chatbox.innerHTML += '<div class="message bot-message"><div class="message-content">' + botResponse + '</div></div>';
+        chatbox.scrollTop = chatbox.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Error during fetch:', error);
+        chatbox.innerHTML += '<div class="message bot-message"><div class="message-content">Sorry, there was an error processing your request.</div></div>';
+        chatbox.scrollTop = chatbox.scrollHeight;
+    });
+
+    document.getElementById('userInput').value = '';
+}
+</script>
+{% endblock %}

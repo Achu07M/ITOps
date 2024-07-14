@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}IT Asset Management{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">IT Asset Management</h2>
+    <p class="lead">Manage your IT assets efficiently</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 d-flex align-items-stretch">
+        <div class="card text-white bg-dark mb-3 h-100">
+            <div class="card-header">Hardware Assets</div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Manage your hardware assets</h5>
+                <p class="card-text">Keep track of your hardware assets, monitor their status, and ensure optimal performance.</p>
+                <a href="{{ url_for('main.hardware_assets') }}" class="btn btn-primary mt-auto">Go to Hardware Assets</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 d-flex align-items-stretch">
+        <div class="card text-white bg-dark mb-3 h-100">
+            <div class="card-header">Software Assets</div>
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Manage your software assets</h5>
+                <p class="card-text">Keep track of your software assets, monitor licensing agreements, and ensure compliance.</p>
+                <a href="{{ url_for('main.software_assets') }}" class="btn btn-primary mt-auto">Go to Software Assets</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

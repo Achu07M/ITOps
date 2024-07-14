@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">Welcome, {{ current_user.username }}</h2>
+    <p class="lead">Your role: {{ current_user.role }}</p>
+    {% if current_user.role == 'Admin' %}
+    <p><a href="{{ url_for('main.admin') }}" class="btn btn-primary btn-lg">Admin Page</a></p>
+    {% endif %}
+
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">IT Asset Management</div>
+            <div class="card-body">
+                <h5 class="card-title">Manage your IT assets efficiently</h5>
+                <p class="card-text">Keep track of your hardware and software assets, monitor their status, and ensure compliance with licensing agreements.</p>
+                <a href="{{ url_for('main.asset_management') }}" class="btn btn-primary">Go to Asset Management</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header">IT Network Monitoring</div>
+            <div class="card-body">
+                <h5 class="card-title">Monitor your network performance</h5>
+                <p class="card-text">Ensure your network infrastructure is running smoothly, monitor traffic, detect issues, and optimize performance.</p>
+                <a href="{{ url_for('main.network_management') }}" class="btn btn-primary">Go to Network Monitoring</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

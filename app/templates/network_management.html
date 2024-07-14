@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}IT Asset Management{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center" style="background-image: url('/static/header-bg.jpg'); background-size: cover; color: white;">
+    <h2 class="display-4">IT Asset Management</h2>
+    <p class="lead">Manage your IT assets efficiently</p>
+</div>
+
+<div class="container mt-4">
+    <div class="card-deck">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Hardware Assets</span>
+                <i class="fas fa-server"></i>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Monitor your network</h5>
+                <p class="card-text">Keep track of your network, monitor their status, and ensure optimal performance.</p>
+                <button id="monitorBtn" class="btn btn-primary mt-auto" data-toggle="modal" data-target="#predictionModal">Monitor</button>
+            </div>
+        </div>
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Network Monitoring Logs</span>
+                <i class="fas fa-network-wired"></i>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Network Monitoring Logs</h5>
+                <p class="card-text">View detailed logs of your network monitoring activities.</p>
+                <a href="{{ url_for('main.network_logs') }}" class="btn btn-primary">View Logs</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="predictionModal" tabindex="-1" role="dialog" aria-labelledby="predictionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="predictionModalLabel">Prediction Result</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="predictionResult"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('monitorBtn').addEventListener('click', function() {
+    fetch('/network_predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const resultDiv = document.getElementById('predictionResult');
+        const table = document.createElement('table');
+        table.classList.add('table', 'table-striped');
+        
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        
+        // Create table headers
+        Object.keys(data).forEach(key => {
+            const th = document.createElement('th');
+            th.textContent = key;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        
+        const tbody = document.createElement('tbody');
+        const row = document.createElement('tr');
+        
+        // Create table data
+        Object.values(data).forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            row.appendChild(td);
+        });
+        tbody.appendChild(row);
+        
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        
+        // Clear previous content and add the new table
+        resultDiv.innerHTML = '';
+        resultDiv.appendChild(table);
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+{% endblock %}

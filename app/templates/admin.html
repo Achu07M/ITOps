@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Page{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Admin Page</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="user_id">Select User:</label>
+                <select name="user_id" id="user_id" class="form-control">
+                    {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }} (Current Role: {{ user.role }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="role">Select Role:</label>
+                <select name="role" id="role" class="form-control">
+                    {% for role in roles %}
+                    <option value="{{ role }}">{{ role }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update Role</button>
+        </form>
+        <p class="text-center mt-3"><a href="{{ url_for('main.home') }}">Back to Home</a></p>
+    </div>
+</div>
+{% endblock %}

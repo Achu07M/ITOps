@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Network Monitoring Logs{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h2 class="display-4">Network Monitoring Logs</h2>
+    <p class="lead">View and manage your network monitoring logs.</p>
+</div>
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">Logs</div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Event</th>
+                        <th>EventType</th>
+                        <th>CreatedOn</th>
+                        <th>Severity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.Name }}</td>
+                        <td>{{ log.Event }}</td>
+                        <td>{{ log.EventType }}</td>
+                        <td>{{ log.CreatedOn }}</td>
+                        <td>{{ log.Severity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
